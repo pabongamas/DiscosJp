@@ -12,21 +12,24 @@
                 <li class="list-group-item noBr cursorPointer" id="listaAllGeneros">Generos</li>
             </ul>
         </div>
-       <!--  <div class="colapsoRecords cursorPointer">
+        <!--  <div class="colapsoRecords cursorPointer">
             <i id="colapseDisc" style="color: var(--blue);font-size: 30px;" class="fas fa-compact-disc rotateImg"></i>
         </div> -->
-        <div class="col-3 div4 oculto" id="divArtistas" style="overflow: auto;padding-top: 15px;">
-            <table id="tableAllArtistas" data-route="{{Route('artistas.showArtistas')}}" class="oculto table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">icono</th>
-                        <th scope="col">Todos los artistas</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="col-3 div4 oculto" id="divArtistas" style="overflow: auto;padding-top: 15px;border-right: 1px solid rgba(0, 0, 0, 0.125);transition: all 0.3s;">
+            <div id="divTableArtistas">
+                <table id="tableAllArtistas" data-route="{{Route('artistas.showArtistas')}}" class="oculto table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">icono</th>
+                            <th scope="col">Todos los artistas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+            <div id="divTableGeneros">
             <table id="tableAllGeneros" data-route="{{Route('generos.showGeneros')}}" class="oculto table table-striped table-hover">
                 <thead>
                     <tr>
@@ -38,13 +41,17 @@
                 </tbody>
             </table>
         </div>
+        </div>
         <div class="col-6 div4" id="divAlbums" style="overflow: auto;padding-top: 15px;">
             <div class="row" id="rowAlbums">
 
             </div>
         </div>
-        <div class="col-6 oculto div4 " style="overflow: auto;padding-top: 15px;" id="divAlbumsxArtista">
+        <div class="col-6 oculto div4 " style="overflow: auto;padding-top: 15px;padding-left: 22px;" id="divAlbumsxArtista">
             <div class="row " id="rowAlbumsxArtista" style="padding-right: 15px;">
+
+            </div>
+            <div class="row " id="rowAlbumsxGenero" style="padding-right: 15px;">
 
             </div>
         </div>

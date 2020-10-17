@@ -67,6 +67,8 @@ function listadoArtistas() {
     $("#divAlbums").addClass("oculto");
     $("#divAlbumsxArtista").addClass("oculto");
     $("#divCanciones").addClass("oculto");
+    $("#divTableGeneros").addClass("oculto");
+    $("#divTableArtistas").removeClass("oculto");
     if (datatableArtistas === null) {
         datatableArtistas = $("#tableAllArtistas").DataTable({
             ajax: {
@@ -214,6 +216,9 @@ function listadoAlbums() {
 
 function cargarInfoAlbum(idArtista) {
     $("#rowAlbumsxArtista").html("");
+    $("#rowAlbumsxGenero").html("");
+    $("#rowAlbumsxArtista").removeClass("oculto");
+    $("#rowAlbumsxGenero").addClass("oculto");
     console.log(idArtista);
     spinner();
     $.ajax({
@@ -688,6 +693,8 @@ function listadoGeneros() {
     $("#divAlbums").addClass("oculto");
     $("#divAlbumsxArtista").addClass("oculto");
     $("#divCanciones").addClass("oculto");
+    $("#divTableGeneros").removeClass("oculto");
+    $("#divTableArtistas").addClass("oculto");
     if (datatableGenero === null) {
         datatableGenero = $("#tableAllGeneros").DataTable({
             ajax: {
@@ -708,6 +715,7 @@ function listadoGeneros() {
                         datatableGenero.$('tr.selected').removeClass('selected');
                         $(this).addClass('selected');
                         var idGenero = $(this).attr("id");
+                        console.log("aca pasa ");
                         cargarInfoGenero(idGenero);
                     }
                 });
@@ -767,7 +775,10 @@ function listadoGeneros() {
 }
 /* la siguiente funcion es para cargar la informacion de albums con respecto al genero seleccionado  */
 function cargarInfoGenero(idGenero) {
-
+    $("#rowAlbumsxGenero").html("");
+    $("#rowAlbumsxArtista").addClass("oculto");
+    $("#rowAlbumsxGenero").removeClass("oculto");
+    $("#rowAlbumsxArtista").html("");
     spinner();
     $.ajax({
         url: "/Generos/listarAlbumxGenero",
@@ -775,6 +786,99 @@ function cargarInfoGenero(idGenero) {
         type: "POST",
         data: { _token: token, idGenero: idGenero },
         success: function(data) {
+            $("#divAlbumsxArtista").removeClass("oculto");
+            var tableArtista = $("<table/>").addClass("table table-bordered tableAlbums");
+            var theadArtista = $("<thead/>");
+            var trArtista = $("<tr/>");
+            var tdArtista = $("<td/>").attr({
+                "style": "padding: 21px 50px;"
+            });
+            var nombreArtista = $("<label/>").html(data.genero).attr({
+                "style": "font-size: 20px;font-weight: bold;display:block;"
+            });
+            var totalAlbum = $("<span/>").attr({
+                "style": "font-size: 15px;"
+            })
+            if (data.totalAlbums > 0) {
+                totalAlbum.html(data.totalAlbums + " álbumes, " + data.totalCanciones + " Canciones");
+            } else {
+                totalAlbum.html("Sin álbumes registrados");
+            }
+            tdArtista.append(nombreArtista, totalAlbum);
+            trArtista.append(tdArtista);
+            theadArtista.append(trArtista);
+            tableArtista.append(theadArtista);
+            $("#rowAlbumsxGenero").append(tableArtista);
+            /* tabla por cada uno de los albums */
+            $(data.albums).each(function(i, o) {
+                var tableAlbum = $("<table/>").addClass("table table-bordered tableAlbums").attr({
+                    style: "background-color:" + o.color
+                });
+                var theadAlbum = $("<thead/>");
+                var tbodyAlbum = $("<tbody/>");
+                var trAlbum = $("<tr/>");
+                var tdAlbum = $("<td/>").attr({
+                    "style": "padding: 21px 50px;"
+                });
+                var divThead = $("<div/>").attr({
+                    "style": "display:flex"
+                });
+                var img = $("<img/>");
+                img.attr({
+                    id: "imgAlbum_" + o.idAlbum,
+                    src: o.imageAlbum,
+                    class: "img-fluid",
+                    style: " width: 10%;"
+
+                });
+                var nombreAlbum = $("<label/>").html(o.nameAlbum).attr({
+                    "style": "font-size: 20px;font-weight: bold;display: flex;"
+                });
+                var artistaAnio = $("<label/>").html(o.artista + " · <span>" + o.anio + "</span>").attr({
+                    "style": "font-size: 20px;font-weight: bold;"
+                });
+                var divCol = $("<div/>").addClass("col-lg-8 col-8").attr("style", "display: block;");
+                divCol.append(nombreAlbum, artistaAnio)
+                divThead.append(img, divCol);
+                tdAlbum.append(divThead);
+                trAlbum.append(tdAlbum);
+                theadAlbum.append(trAlbum);
+                tableAlbum.append(theadAlbum);
+                var tableCanciones = $("<table/>").addClass("table tableAlbums table-hover");
+                var theadCanciones = $("<thead/>");
+                var tbodyCanciones = $("<tbody/>");
+                var trCount = $("<tr/>");
+                var tdCount = $("<td/>").html(o.canciones.length + " canciones").attr({
+                    style: "width:100%;text-align:right;border: 1px solid " + o.color + ";border-left: none;border-right:none",
+                    colspan: "3"
+                });
+                trCount.append(tdCount);
+                tbodyCanciones.append(trCount);
+                $(o.canciones).each(function(indice, objeto) {
+                    var trBody = $("<tr/>");
+                    var tdNumeroCancion = $("<td/>").html(objeto.numero_cancion).attr({
+                        style: "width:10%;border: 1px solid " + o.color + ";border-left: none;border-right:none",
+                        /* style: "width:10%", */
+
+                    });
+                    var tdNombreCancion = $("<td/>").html(objeto.name).attr({
+                        style: "width:80%;border: 1px solid " + o.color + ";border-left: none;border-right:none",
+                        /* style: "width:80%;", */
+                    });
+                    var tdDuracion = $("<td/>").html(objeto.minutos).attr({
+                        style: "width:10%;border: 1px solid " + o.color + ";border-left: none;border-right:none;text-align: right;",
+                        /* style: "width:10%", */
+                    });
+                    trBody.append(tdNumeroCancion, tdNombreCancion, tdDuracion);
+                    tbodyCanciones.append(trBody);
+                });
+                tableCanciones.append(tbodyCanciones);
+                var divCanciones = $("<div/>").attr({
+                    style: "width: 100%;padding-left: 15px;padding-right: 15px;"
+                });
+                divCanciones.append(tableCanciones);
+                $("#rowAlbumsxGenero").append(tableAlbum, divCanciones);
+            });
             spinner(false);
         }
     });
