@@ -17,6 +17,28 @@ class generoController extends Controller
 
         return view('generoView.index');
     }
+    /* metodo para listar todos los  generos en la vista principal  */
+    public function listarAllGeneros(Request $request)
+    {
+        $start = $request->start;
+        $limit = $request->length;
+        $genero = DB::select('select * from genero 
+        order by name limit ' . $limit . ' offset ' . $start . '');
+        $generoTotal = DB::select('select * from genero  order by name');
+        $arRegistros = array();
+        foreach ($genero as $value) {
+            $obj = new \stdClass();
+            $obj->id_genero = $value->id;
+            $obj->DT_RowId = $value->id;
+            $obj->nombre = $value->name;
+            $arRegistros[] = $obj;
+        }
+        return response()->json([
+            'data' => $arRegistros,
+            'iTotalRecords' => count($generoTotal),
+            'iTotalDisplayRecords' => count($generoTotal)
+        ]);
+    }
 
     /* Los siguientes metodos es para la administracion de generos */
     public function listarAdminGeneros()
@@ -94,17 +116,17 @@ class generoController extends Controller
         ]);
     }
     public function editarGenero(Request $request)
-  {
-    $idGenero=$request->idGenero;
-    $nombreGenero=$request->nombreGenero;
-    $album=genero::find($idGenero);
-    $album->name = $nombreGenero;
-    $album->save();
+    {
+        $idGenero = $request->idGenero;
+        $nombreGenero = $request->nombreGenero;
+        $album = genero::find($idGenero);
+        $album->name = $nombreGenero;
+        $album->save();
 
-    
-    return response()->json([
-      'msg' => '',
-      'successs' => true
-    ]);
-  }
+
+        return response()->json([
+            'msg' => '',
+            'successs' => true
+        ]);
+    }
 }

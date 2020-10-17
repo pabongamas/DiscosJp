@@ -9,7 +9,7 @@
                 <li class="list-group-item noBr cursorPointer" id="ListaAllArtistas">Artistas</li>
                 <li class="list-group-item noBr cursorPointer" id="listaAllAlbums">Álbumes</li>
                 <li class="list-group-item noBr cursorPointer" id="listaAllCanciones">Canciones</li>
-                <li class="list-group-item noBr cursorPointer">Generos</li>
+                <li class="list-group-item noBr cursorPointer" id="listaAllGeneros">Generos</li>
             </ul>
         </div>
        <!--  <div class="colapsoRecords cursorPointer">
@@ -21,6 +21,16 @@
                     <tr>
                         <th scope="col">icono</th>
                         <th scope="col">Todos los artistas</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <table id="tableAllGeneros" data-route="{{Route('generos.showGeneros')}}" class="oculto table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Genero</th>
                     </tr>
                 </thead>
                 <tbody>

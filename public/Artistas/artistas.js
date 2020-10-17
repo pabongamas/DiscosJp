@@ -1,6 +1,7 @@
 var datatableArtistas = null;
 var dataTableCanciones = null;
 var datatableCancionesGeneral = null;
+var datatableGenero = null;
 var token = $('[name="_token"]').val();
 var idActual = null;
 
@@ -29,6 +30,9 @@ function iniciar() {
     });
     $("#listaAllCanciones").on("click", function() {
         listadoCanciones();
+    });
+    $("#listaAllGeneros").on("click", function() {
+        listadoGeneros();
     });
     $('.ulHover li').on('click', function() {
         $('.ulHover .liSelected').removeClass('liSelected');
@@ -672,6 +676,105 @@ function cargarAlbumsArtistaxCancion(idArtista) {
             $("#modalInfoArtista").modal("show");
 
 
+            spinner(false);
+        }
+    });
+}
+/* metodo para cargar las canciones de todos los artistas junto con la inforamacion artista,album ,genero */
+function listadoGeneros() {
+    spinner();
+    $("#divArtistas").removeClass("oculto");
+    $("#tableAllGeneros").removeClass("oculto");
+    $("#divAlbums").addClass("oculto");
+    $("#divAlbumsxArtista").addClass("oculto");
+    $("#divCanciones").addClass("oculto");
+    if (datatableGenero === null) {
+        datatableGenero = $("#tableAllGeneros").DataTable({
+            ajax: {
+                url: $('#tableAllGeneros').data('route'),
+                header: { 'X-CSRF-TOKEN': token },
+                type: "POST",
+                data: function(d) {
+                    d._token = token;
+                },
+                dataSrc: "data"
+            },
+            drawCallback: function(settings) {
+                spinner(false);
+                $('#tableAllGeneros tbody').on('click', 'tr', function() {
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                    } else {
+                        datatableGenero.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                        var idGenero = $(this).attr("id");
+                        cargarInfoGenero(idGenero);
+                    }
+                });
+            },
+            serverSide: true,
+            ordering: false,
+            processing: true,
+            dom: '<"fondoGris"<"row"<"col-1"><"col-8 paginateTop paginateCenter"ip><"col-3 lengthTop"l>>>tr<"fondoGrisAbajo"<"row"<"col-1"><"col-8 paginateTop paginateCenter"ip><"col-3">>>',
+            autoWidth: false,
+            columns: [{
+                    data: '',
+                    width: "15%",
+                    class: "text-left",
+                    render: function(data, type, full, meta) {
+                        return full.nombre;
+                    }
+                }
+
+
+            ],
+            language: {
+                sProcessing: "Procesando...",
+                sLengthMenu: "<label style='margin:5px 5px 0 5px;'>Ver</label>" + '<select style="width:45px;height: 25px;">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="50">50</option>' +
+                    '</select>',
+                sZeroRecord: "No se encontraron Generos",
+                sEmptyTable: "No se encontraron Generos",
+                sInfo: "_TOTAL_ Generos",
+                sInfoEmpty: "No se encontraron Generos",
+                sInfoFiltered: "(Filtrado de un total de _MAX_ registros)",
+                sInfoPostFix: "",
+                sSearch: "Buscar:",
+                sUrl: "",
+                sInfoThousands: ",",
+                sLoadingRecords: "Cargando...",
+                oPaginate: {
+                    sFirst: "Primero",
+                    sLast: "Ãšltimo",
+                    sNext: "Siguiente",
+                    sPrevious: "Anterior"
+                },
+                oAria: {
+                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                    sSortDescending: ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+            lengthMenu: [
+                [10, 20, 50],
+                [10, 20, 50]
+            ]
+        });
+    } else {
+        datatableGenero.ajax.reload(null, false);
+    }
+}
+/* la siguiente funcion es para cargar la informacion de albums con respecto al genero seleccionado  */
+function cargarInfoGenero(idGenero) {
+
+    spinner();
+    $.ajax({
+        url: "/Generos/listarAlbumxGenero",
+        dataType: 'json',
+        type: "POST",
+        data: { _token: token, idGenero: idGenero },
+        success: function(data) {
             spinner(false);
         }
     });

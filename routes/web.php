@@ -46,10 +46,12 @@ Route::post('/Canciones/listar', [cancionesController::class, 'listarAllCancione
 
 
 Route::get('/Generos/Admin', [generoController::class, 'administrar'])->name('generos.index');
+Route::post('/Generos/listar', [generoController::class, 'listarAllGeneros'])->name('generos.showGeneros');
 Route::post('/Generos/showAdmin', [generoController::class, 'listarAdminGeneros'])->name('generos.showAdmin');
 Route::post('/Generos/AdminCrearGenero', [generoController::class, 'crearGenero'])->name('generos.crearGenero');
 Route::post('/Generos/AdminEliminarGenero', [generoController::class, 'eliminarGenero'])->name('generos.eliminarGenero');
 Route::post('/Generos/AdminEditarGenero', [generoController::class, 'editarGenero'])->name('generos.editarGenero');
+Route::post('/Generos/listarAlbumxGenero', [generoController::class, 'listarAlbumxGenero'])->name('generos.listarAlbumxGenero');
 
 Route::get('/home', [artistaController::class,'index'])->name('home');
 
