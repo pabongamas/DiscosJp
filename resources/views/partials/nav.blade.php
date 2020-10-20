@@ -33,6 +33,14 @@
       <a class="nav-link aInterno " href="{{route('general.index')}}" >General</a>
     </div>
     @endif
+    @if(Auth::user()->hasRole('user'))
+    <button class="dropdown-btn nobrB">General
+      <!-- <i class="fa fa-caret-down"></i> -->
+    </button>
+    <div class="dropdown-container oculto nobrB">
+      <a class="nav-link aInterno " href="{{route('general.index')}}" >General</a>
+    </div>
+    @endif
   </ul>
   @endguest
 </div>

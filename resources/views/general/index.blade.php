@@ -2,6 +2,8 @@
 <script src="{{ asset('Artistas/artistas.js') }}" defer></script>
 @section('title','Discos')
 @section('content')
+<input id="nameUser" type="hidden" value="{{Auth::user()->name}}">
+<input id="idUser" type="hidden" value="{{Auth::user()->id}}">
 <div class="container-fluid">
     <div class="row">
         <div id="divOpciones" class="col-3 div4" style="padding-top: 15px;border: 1px solid rgba(0, 0, 0, 0.125);transition: all 0.3s;">
@@ -30,17 +32,17 @@
                 </table>
             </div>
             <div id="divTableGeneros">
-            <table id="tableAllGeneros" data-route="{{Route('generos.showGeneros')}}" class="oculto table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Genero</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <table id="tableAllGeneros" data-route="{{Route('generos.showGeneros')}}" class="oculto table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Genero</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="col-6 div4" id="divAlbums" style="overflow: auto;padding-top: 15px;">
             <div class="row" id="rowAlbums">

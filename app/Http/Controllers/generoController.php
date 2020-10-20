@@ -15,7 +15,7 @@ class generoController extends Controller
     }
     public function administrar(Request $request)
     {
-
+        $request->user()->authorizeRoles(['admin']);
         return view('generoView.index');
     }
     /* metodo para listar todos los  generos en la vista principal  */

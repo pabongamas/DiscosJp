@@ -19,7 +19,7 @@ class albumController extends Controller
   }
   public function administrar(Request $request)
   {
-
+    $request->user()->authorizeRoles(['admin']);
     return view('albumsView.index');
   }
   public function listarAllAlbums()

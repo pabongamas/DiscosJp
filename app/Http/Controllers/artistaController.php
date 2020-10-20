@@ -17,12 +17,11 @@ class artistaController extends Controller
   }
   public function administrar(Request $request)
   {
-
+    $request->user()->authorizeRoles(['admin']);
     return view('artistasView.index');
   }
   public function index(Request $request)
   {
-
     return view('general.index');
   }
   public function listarAllArtistas()
