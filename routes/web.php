@@ -41,6 +41,7 @@ Route::post('/Albums/AdminEditarAlbum', [albumController::class, 'editarAlbum'])
 Route::post('/Albums/listarAlbumxArtista', [albumController::class, 'listarAlbumxArtista'])->name('albums.listarAlbumxArtista');
 Route::post('/Albums/verInfoAlbum', [albumController::class, 'verInfoAlbum'])->name('albums.verInfoAlbum');
 Route::post('/Albums/guardarCanciones', [albumController::class, 'guardarCanciones'])->name('albums.guardarCanciones');
+Route::post('/Albums/addAlbumColeccion', [albumController::class, 'addAlbumColeccion'])->name('albums.addAlbumColeccion');
 
 Route::post('/Canciones/listar', [cancionesController::class, 'listarAllCanciones'])->name('canciones.showCanciones');
 

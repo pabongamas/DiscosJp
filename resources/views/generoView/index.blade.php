@@ -19,7 +19,7 @@
                 <table id="tableGeneros" data-route="{{Route('generos.showAdmin')}}" class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <td colspan="2">Acciones</td>
+                            <th colspan="2">Acciones</th>
                             <th>Id</th>
                             <th>Nombre genero</th>
                             

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\album;
 use App\Models\album_artista;
+use App\Models\album_user;
 use App\Models\Paises;
 use App\Models\artista;
 use App\Models\canciones;
 use App\Models\genero;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -22,8 +24,10 @@ class albumController extends Controller
     $request->user()->authorizeRoles(['admin']);
     return view('albumsView.index');
   }
-  public function listarAllAlbums()
+  public function listarAllAlbums(Request $request)
   {
+    $userRol=$request->user()->hasRole('user');
+    $userId= $request->user()->id;
     $artistaTotal = DB::select('select album.id as idAlbum,album.name as nameAlbum,album.image as imageAlbum
     ,artistas.id as idArtista, artistas.name as nameArtista from album 
     join album_artista on album_artista.album_id=album.id 
@@ -33,6 +37,12 @@ class albumController extends Controller
       $obj = new \stdClass();
       $obj->id_album = $value->idAlbum;
       $obj->DT_RowId = $value->idAlbum;
+      $enColeccion = DB::select('select * from album_user where user_id='.$userId.' and album_id='.$value->idAlbum.'');
+      if(count($enColeccion)>0){
+        $obj->enColeccion=true;
+      }else{
+        $obj->enColeccion=false;
+      }
       $obj->nombre = $value->nameAlbum;
       $obj->artista = $value->nameArtista;
       $obj->image = $value->imageAlbum;
@@ -64,7 +74,8 @@ class albumController extends Controller
       $arRegistros[] = $obj;
     }
     return response()->json([
-      'data' => $arRegistros
+      'data' => $arRegistros,
+      'userNoAdmin'=>$userRol
     ]);
   }
   /* Los siguientes metodos es para la administracion de albums */
@@ -355,6 +366,18 @@ class albumController extends Controller
     return response()->json([
       'msg' => '',
       'successs' => true
+    ]);
+  }
+  public function addAlbumColeccion(Request $request){
+    $idAlbum=$request->idAlbum;
+    $user= $request->user()->id;
+    $albumUser=new album_user;
+    $albumUser->user_id=$user;
+    $albumUser->album_id=$idAlbum;
+    $albumUser->save();
+    return response()->json([
+      'msg' => '',
+      'success' => true
     ]);
   }
 }

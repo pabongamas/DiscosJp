@@ -190,24 +190,45 @@ function listadoAlbums() {
         success: function(data) {
             $(data.data).each(function(i, o) {
                 var divCol = $("<div/>").addClass("col-6 col-lg-3 col-md-3");
-                var divCard = $("<div/>").addClass("card cursorPointer").attr({
-                    "style": "width: 18rem;margin-bottom: 15px;box-shadow:5px 5px 8px 0px " + o.color + ";border: 1px solid " + o.color,
-                    "onclick": "verInfoAlbum(" + o.id_album + "," + o.id_artista + ")"
+                var divCard = $("<div/>").addClass("card").attr({
+                    "style": "width: 18rem;margin-bottom: 15px;box-shadow:5px 5px 8px 0px " + o.color + ";border: 1px solid " + o.color
                 });
-
-                var imgCard = $("<img/>").addClass("card-img-top").attr({
+                var imgCard = $("<img/>").addClass("card-img-top cursorPointer").attr({
                     "src": o.image,
                     "alt": data.nombre,
-                    "style": "    max-height: 274px"
+                    "style": "    max-height: 274px",
+                    "onclick": "verInfoAlbum(" + o.id_album + "," + o.id_artista + ")"
                 });
                 var divCardBody = $("<div/>").addClass("card-body");
                 var nombreAlbum = $("<span/>").addClass("card-text").html(o.nombre);
                 var nombreArtista = $("<p/>").addClass("card-text").html(o.artista);
                 divCardBody.append(nombreAlbum, nombreArtista);
+                if (data.userNoAdmin && !o.enColeccion) {
+                    var CaretAñadir = $("<i/>").addClass("fas fa-plus cursorPointer").attr({
+                        "style": "float:right;font-size:18px;color:" + o.color,
+                        "data-toggle": "tooltip",
+                        "data-placement": "right",
+                        "title": "Añadir " + o.nombre + " a mi colección",
+                        "onclick": "addAlbumColeccion(" + o.id_album + ")"
+                    })
+                    nombreArtista.append(CaretAñadir);
+                    /* divCardBody.append(CaretAñadir); */
+                } else if (data.userNoAdmin && o.enColeccion) {
+                    /* <i class="fas fa-check"></i> */
+                    var CaretAñadir = $("<i/>").addClass("fas fa-check cursorPointer").attr({
+                        "style": "float:right;font-size:18px;color:" + o.color,
+                        "data-toggle": "tooltip",
+                        "data-placement": "right",
+                        "title": o.nombre + " ya en mi colección"
+                            /* "onclick": "addAlbumColeccion(" + o.id_album + ")" */
+                    })
+                    nombreArtista.append(CaretAñadir);
+                }
                 divCard.append(imgCard, divCardBody);
                 divCol.append(divCard);
                 $("#rowAlbums").append(divCol);
             });
+            $('[data-toggle="tooltip"]').tooltip()
             spinner(false);
 
         }
@@ -880,6 +901,33 @@ function cargarInfoGenero(idGenero) {
                 $("#rowAlbumsxGenero").append(tableAlbum, divCanciones);
             });
             spinner(false);
+        }
+    });
+}
+/* el siguiente metodo es para añadir un album a la coleccion de un usuario  */
+function addAlbumColeccion(idAlbum) {
+    spinner();
+    $.ajax({
+        url: "/Albums/addAlbumColeccion",
+        dataType: 'json',
+        type: "POST",
+        data: { _token: token, idAlbum: idAlbum },
+        success: function(data) {
+            spinner(false);
+            if (data.success) {
+                Swal.fire(
+                    'Añadido a la colección!',
+                    'Se ha añadido correctamente !',
+                    'success'
+                )
+                listadoAlbums();
+            } else {
+                Swal.fire(
+                    'Error!',
+                    'ha ocurrido un error añadiendo album a la colección',
+                    'error'
+                )
+            }
         }
     });
 }

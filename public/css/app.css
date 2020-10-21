@@ -17043,6 +17043,8 @@ readers do not read off random characters that represent icons */
   font-weight: 400;
 }
 
+/* @import '~@jkryszto/mdb-for-laravel/scss/mdb'; */
+
 .sectionPrincipal {
   min-height: calc(100vh - 64px);
   background-repeat: no-repeat;
