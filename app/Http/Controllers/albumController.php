@@ -12,6 +12,8 @@ use App\Models\genero;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class albumController extends Controller
 {
@@ -28,11 +30,56 @@ class albumController extends Controller
   {
     $request->user()->authorizeRoles(['user']);
     $user= $request->user()->id;
-    $albums=album::paginate(15);
+    /* $albums=album::paginate(10); */
 
-    return view('general.indexMiColeccion',compact('albums'));
-
-    /* return view('general.indexMiColeccion'); */
+     $artistaTotal = DB::table('album')
+     ->join('album_artista', 'album_artista.album_id', '=', 'album.id')
+     ->join('artistas','artistas.id','=','album_artista.artista_id')
+     ->join('album_user','album_user.album_id','=','album.id')
+     ->join('users','album_user.user_id','=','users.id')
+     ->select('album.id as idAlbum','album.name as nameAlbum','album.image as imageAlbum'
+     ,'artistas.id as idArtista','artistas.name as nameArtista')
+     ->where('users.id','=',$user)
+     ->orderBy('artistas.name')
+     ->orderBy('album.name')
+     ->paginate(10);
+    
+    $arRegistros = array();
+    foreach ($artistaTotal as $value) {
+      $obj = new \stdClass();
+      $obj->id_album = $value->idAlbum;
+      $obj->DT_RowId = $value->idAlbum;
+      $obj->nombre = $value->nameAlbum;
+      $obj->artista = $value->nameArtista;
+      $obj->image = $value->imageAlbum;
+      $obj->id_artista = $value->idArtista;
+      /* siguiente es para obtener el color predominante la imagen  */
+      $imageAlbum = explode(",", $value->imageAlbum);
+      $dataImagen = base64_decode($imageAlbum[1]);
+      $image = imagecreatefromstring($dataImagen);
+      $rTotal = 0;
+      $vTotal = 0;
+      $aTotal = 0;
+      $total = 0;
+      for ($x = 0; $x < imagesx($image); $x++) {
+        for ($y = 0; $y < imagesy($image); $y++) {
+          $rgb = imagecolorat($image, $x, $y);
+          $r   = ($rgb >> 16) & 0xFF;
+          $v   = ($rgb >> 8) & 0xFF;
+          $a   = $rgb & 0xFF;
+          $rTotal += $r;
+          $vTotal += $v;
+          $aTotal += $a;
+          $total++;
+        }
+      }
+      $rPromedio = round($rTotal / $total);
+      $vPromedio = round($vTotal / $total);
+      $aPromedio = round($aTotal / $total);
+      $obj->color="rgb(".$rPromedio.",".$vPromedio.",".$aPromedio.")";
+      $arRegistros[] = $obj;
+    }
+    return view('general.indexMiColeccion',['albums' => $arRegistros,'pagination'=>$artistaTotal]);
   }
   public function listarAllAlbums(Request $request)
   {
