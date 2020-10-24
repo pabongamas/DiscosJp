@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 Route::view('/','index')->name('index');
 Auth::routes(['register'=>false]);
 Route::get('/General', [artistaController::class, 'index'])->name('general.index');
+Route::get('/General/indexMiColeccion', [albumController::class, 'indexMiColeccion'])->name('general.indexMiColeccion');
+
 Route::post('/Artistas/listar', [artistaController::class, 'listarAllArtistas'])->name('artistas.showArtistas');
 Route::get('/Artistas/Admin', [artistaController::class, 'administrar'])->name('artistas.index');
 Route::post('/Artistas/showAdmin', [artistaController::class, 'listarAdminArtistas'])->name('artistas.showAdmin');
@@ -42,6 +44,7 @@ Route::post('/Albums/listarAlbumxArtista', [albumController::class, 'listarAlbum
 Route::post('/Albums/verInfoAlbum', [albumController::class, 'verInfoAlbum'])->name('albums.verInfoAlbum');
 Route::post('/Albums/guardarCanciones', [albumController::class, 'guardarCanciones'])->name('albums.guardarCanciones');
 Route::post('/Albums/addAlbumColeccion', [albumController::class, 'addAlbumColeccion'])->name('albums.addAlbumColeccion');
+Route::post('/Albums/miColeccion', [albumController::class, 'miColeccion'])->name('albums.miColeccion');
 
 Route::post('/Canciones/listar', [cancionesController::class, 'listarAllCanciones'])->name('canciones.showCanciones');
 

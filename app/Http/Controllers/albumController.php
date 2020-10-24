@@ -24,6 +24,16 @@ class albumController extends Controller
     $request->user()->authorizeRoles(['admin']);
     return view('albumsView.index');
   }
+  public function indexMiColeccion(Request $request)
+  {
+    $request->user()->authorizeRoles(['user']);
+    $user= $request->user()->id;
+    $albums=album::paginate(15);
+
+    return view('general.indexMiColeccion',compact('albums'));
+
+    /* return view('general.indexMiColeccion'); */
+  }
   public function listarAllAlbums(Request $request)
   {
     $userRol=$request->user()->hasRole('user');
@@ -379,5 +389,13 @@ class albumController extends Controller
       'msg' => '',
       'success' => true
     ]);
+  }
+
+  public function miColeccion(Request $request){
+    $user= $request->user()->id;
+    $albums=album::paginate(15);
+
+    return view('general.indexMiColeccion',compact('albums'));
+   
   }
 }

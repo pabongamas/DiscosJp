@@ -39,7 +39,10 @@
     </button>
     <div class="dropdown-container oculto nobrB">
       <a class="nav-link aInterno " href="{{route('general.index')}}" >General</a>
+      <a class="nav-link aInterno " href="{{route('general.indexMiColeccion')}}" >Mi colección</a>
     </div>
+    
+      
     @endif
   </ul>
   @endguest

@@ -17045,6 +17045,10 @@ readers do not read off random characters that represent icons */
 
 /* @import '~@jkryszto/mdb-for-laravel/scss/mdb'; */
 
+#app {
+  padding-bottom: 70px;
+}
+
 .sectionPrincipal {
   min-height: calc(100vh - 64px);
   background-repeat: no-repeat;
