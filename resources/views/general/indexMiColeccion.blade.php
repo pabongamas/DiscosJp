@@ -7,16 +7,20 @@
 <input id="idUser" type="hidden" value="{{Auth::user()->id}}">
 <div class="container">
     <div class="row">
-        <div class="col-12 col-lg-12 col-md-12">
+        <div class="col-12 col-lg-12 col-md-12" style="overflow: auto;padding-top: 15px;">
             <div class="row">
                 @isset($albums)
                 @foreach($albums as $album)
                 <div class="col-12 col-lg-4 col-md-4">
                     <div class="card" style="width: 22rem;margin-bottom: 15px;box-shadow:5px 5px 8px 0px {{$album->color}};border: 1px solid {{$album->color}}">
-                        <img onclick="verInfoAlbum({{$album->id_album}},{{$album->id_artista}})" class=" card-img-top cursorPointer" src="{{$album->image}}">
+                    <!-- este es para visualizar la info por medio de js y ajax -->
+                     {{-- <img onclick="verInfoAlbum({{$album->id_album}},{{$album->id_artista}})" class=" card-img-top cursorPointer" src="{{$album->image}}">--}}
+                     <!-- este es para visualizar la info por medio del route y el blade de laravel -->
+                        <img onclick="window.location='{{ route('albums.show',['album'=>$album->id_album,'artista'=>$album->id_artista])}}'" class=" card-img-top cursorPointer" src="{{$album->image}}">
                         <div class="card-body">
                             <span class="card-text">{{$album->nombre}}</span>
                             <p class="card-text">{{$album->artista}}</p>
+                            <a class=" text-secondary d-flex justify-content-between align-items-center" href="{{route('albums.show',['album'=>$album->id_album,'artista'=>$album->id_artista])}}">IR</a>
                         </div>
                     </div>
                 </div>

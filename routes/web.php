@@ -46,6 +46,10 @@ Route::post('/Albums/guardarCanciones', [albumController::class, 'guardarCancion
 Route::post('/Albums/addAlbumColeccion', [albumController::class, 'addAlbumColeccion'])->name('albums.addAlbumColeccion');
 Route::post('/Albums/miColeccion', [albumController::class, 'miColeccion'])->name('albums.miColeccion');
 
+//aca en esta sigiuente ruta estoy trabajando los routes recibo un album con el id del album , se trabaja con
+//route de laravel
+Route::get('/albumsColeccion/{album}/{artista}',[albumController::class, 'showAlbumColeccion'])->name('albums.show');
+
 Route::post('/Canciones/listar', [cancionesController::class, 'listarAllCanciones'])->name('canciones.showCanciones');
 
 

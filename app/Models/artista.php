@@ -9,4 +9,5 @@ class artista extends Model
 {
     public $timestamps = false;
     protected $fillable = ['name'];
+    protected $table='artistas';
 }

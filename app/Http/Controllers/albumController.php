@@ -81,6 +81,45 @@ class albumController extends Controller
     }
     return view('general.indexMiColeccion',['albums' => $arRegistros,'pagination'=>$artistaTotal]);
   }
+  public function showAlbumColeccion(album $album ,artista $artista){
+    $canciones = canciones::where('id_album', $album->id)
+    ->select('id', 'id_album', 'minutos', 'name', 'numero_cancion', 'numero_cancion as DT_RowId')
+    ->orderBy('numero_cancion')
+    ->get();
+    $genero = genero::find($album->id_genero);
+    $album->genero = $genero->name;
+    $album->anio = date('Y', strtotime(str_replace('-', '/', $album->anio)));
+    $imageAlbum = explode(",", $album->image);
+      $dataImagen = base64_decode($imageAlbum[1]);
+      $image = imagecreatefromstring($dataImagen);
+      $rTotal = 0;
+      $vTotal = 0;
+      $aTotal = 0;
+      $total = 0;
+      for ($x = 0; $x < imagesx($image); $x++) {
+        for ($y = 0; $y < imagesy($image); $y++) {
+          $rgb = imagecolorat($image, $x, $y);
+          $r   = ($rgb >> 16) & 0xFF;
+          $v   = ($rgb >> 8) & 0xFF;
+          $a   = $rgb & 0xFF;
+          $rTotal += $r;
+          $vTotal += $v;
+          $aTotal += $a;
+          $total++;
+        }
+      }
+      $rPromedio = round($rTotal / $total);
+      $vPromedio = round($vTotal / $total);
+      $aPromedio = round($aTotal / $total);
+      $album->color="rgb(".$rPromedio.",".$vPromedio.",".$aPromedio.")";
+    
+
+    return view('general.showAlbumColeccion',[
+         'album'=>$album,
+         'artista'=>$artista,
+         'canciones'=>$canciones
+    ]);
+ }
   public function listarAllAlbums(Request $request)
   {
     $userRol=$request->user()->hasRole('user');
