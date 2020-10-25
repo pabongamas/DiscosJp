@@ -17414,6 +17414,18 @@ table tbody::-webkit-scrollbar {
   width: 5%;
 }
 
+.w30 {
+  width: 30%;
+}
+
+.w20 {
+  width: 20%;
+}
+
+.w15 {
+  width: 15%;
+}
+
 .spinner {
   position: fixed;
   opacity: 0.9;

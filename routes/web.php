@@ -4,6 +4,7 @@ use App\Http\Controllers\albumController;
 use App\Http\Controllers\artistaController;
 use App\Http\Controllers\cancionesController;
 use App\Http\Controllers\generoController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,10 @@ use Illuminate\Support\Facades\Route;
 }); */
 Route::view('/','index')->name('index');
 Auth::routes(['register'=>false]);
+
+Route::get('/user',[UserController::class, 'index'])->name('user.index');
+Route::get('/user/crear',[UserController::class, 'create'])->name('user.create');
+
 Route::get('/General', [artistaController::class, 'index'])->name('general.index');
 Route::get('/General/indexMiColeccion', [albumController::class, 'indexMiColeccion'])->name('general.indexMiColeccion');
 
