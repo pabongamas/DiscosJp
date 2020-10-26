@@ -10,7 +10,7 @@
                 <p class="text-secondary">Usuario: {{$user->name}}</p>
                 <p class="text-secondary">Email: {{$user->email}}</p>
                 <p class="text-secondary">Fecha nacimiento: {{$user->birthdate}}</p>
-                <p class="text-black-50">Creado {{$user->created_at->diffForHumans()}}</p>
+                <p class="text-black-50"> @if (is_null($user->created_at)) sin información de creación de usuario @else creado {{$user->created_at->diffForHumans()}} @endif</p>
                 <div class="d-flex justify-content-between align-items-center">
                         <a href="{{ route('user.index')}}">Regresar</a>
                 @auth

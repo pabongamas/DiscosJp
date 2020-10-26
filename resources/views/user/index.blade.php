@@ -4,7 +4,7 @@
     <input id="nameUser" type="hidden" value="{{ Auth::user()->name }}">
     <input id="idUser" type="hidden" value="{{ Auth::user()->id }}">
     <div class="container-fluid">
-        <div class="container div4">
+        <div class="container">
             <nav aria-label="breadcrumb " style="    padding-top: 20px;">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item " aria-current="page">

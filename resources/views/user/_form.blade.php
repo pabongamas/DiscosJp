@@ -77,7 +77,7 @@
             <option value="0"  @if (old('rol') == "0") {{ 'selected' }} @endif>Sin rol</option>
             @if (count($roles) > 0)
                 @foreach ($roles as $roles)
-                    <option value="{{ $roles->id }}" @if (old('rol') ==  $roles->id) {{ 'selected' }} @endif>{{ $roles->name }}</option>
+                    <option value="{{ $roles->id }}" @if (old('rol') ==  $roles->id) {{ 'selected' }} @endif >{{ $roles->description }}</option>
                 @endforeach
             @else
             @endif

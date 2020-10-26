@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Role;
 use App\Models\role_user;
 use App\Models\User;
@@ -68,7 +69,7 @@ class UserController extends Controller
             $role_user->save();
         }
 
-        return redirect()->route('user.index')->with('status-success', 'El usuario '.$usuario->name.' fue creado con exito');
+        return redirect()->route('user.index')->with('status-success', 'El usuario ' . $usuario->name . ' fue creado con exito');
     }
 
     /**
@@ -93,10 +94,14 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('user.edit',[
-            'user'=>$user,
-            'roles' => $roles
-       ]);
+        $userRol = DB::table('role_user')
+        ->where('user_id', '=', $user->id)
+        ->get();
+        return view('user.edit', [
+            'user' => $user,
+            'roles' => $roles,
+            'userRol'=>$userRol
+        ]);
     }
 
     /**
@@ -106,11 +111,32 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update( User $user,UserCreateRequest $request)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        var_dump($user);
-        /* $user->update($request->validated());
-        return redirect()->route('user.show',$user)->with('status','El usuario se ha actualizado Correctamente'); */
+        $user->update($request->validated());
+        if ($request->rol == "0") {
+            $userRol = DB::table('role_user')
+                ->where('user_id', '=', $user->id)
+                ->get();
+
+            if (count($userRol) > 0) {
+                DB::table('role_user')->where('user_id', '=', $user->id)->delete();
+            }
+        } else {
+            $userRol = DB::table('role_user')
+                ->where('user_id', '=', $user->id)
+                ->get();
+            if (count($userRol) > 0) {
+                $Rol = DB::table('role_user')
+                    ->where('user_id', $user->id)
+                    ->update(['role_id' => $request->rol]);
+            }else{
+                DB::table('role_user')->insert([
+                    ['user_id' => $user->id, 'role_id' => $request->rol]
+                ]);
+            }
+        }
+        return redirect()->route('user.index', $user)->with('status', 'El usuario ' . $user->name . ' se ha actualizado Correctamente');
     }
 
     /**
