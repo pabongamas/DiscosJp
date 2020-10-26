@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb " style="    padding-top: 20px;">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item " aria-current="page">
-                        <h4 style="padding-right: 10px">Administración Artistas</h4>
+                        <h4 style="padding-right: 10px;padding-top: 4px;">Administración Usuarios</h4>
                         <a class="btn btn-primary" href="{{ route('user.create') }}">Nuevo usuario</a>
                     </li>
                 </ol>
@@ -33,16 +33,30 @@
                                 @foreach ($users as $user)
                                     <tr>
                                         <td class="w5 text-center">
-                                            <i class="fas fa-user-times"></i>
+                                            {{-- <i class="fas fa-user-times"></i>
+                                            --}}
+                                            <a class="btn btn-primary" href="{{ route('user.edit', $user->id) }}">Editar</a>
                                         </td>
                                         <td class="w5 text-center">
-                                            <i class="fas fa-pencil-alt"></i>
+                                            {{-- <i class="fas fa-pencil-alt"></i>
+                                            --}}
+                                            <a class="btn btn-danger" href="#"
+                                                onclick="document.getElementById('deleteUser_{{ $user->id }}').submit()">Eliminar</a>
+                                            <form id="deleteUser_{{ $user->id }}" class="d-none" method="POST"
+                                                action="{{ route('user.destroy', $user->id) }}">
+                                                @csrf @method('DELETE')
+
+                                            </form>
                                         </td>
                                         <td class="w5 text-center">
                                             <label>{{ $user->id }}</label>
                                         </td>
                                         <td class="w15 text-center">
-                                            <label>{{ $user->fullname }}</label>
+                                            {{-- <label>{{ $user->fullname }}</label>
+                                            --}}
+                                            <a class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                                title="Disabled tooltip" class=""
+                                                href="{{ route('user.show', $user->id) }}">{{ $user->fullname }}</a>
                                         </td>
                                         <td class="w15 text-center">
                                             <label>{{ $user->name }}</label>
@@ -61,7 +75,7 @@
                                             @endif
                                         </td>
                                         <td class="w15 text-center">
-                                            <a class="btn btn-primary" href="#">{{ $user->rolName }}</a>
+                                            <label>@if (is_null($user->rolDescription)) Sin rol @else {{$user->rolDescription}} @endif</label>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -81,6 +95,7 @@
                         {{ $users->links('pagination::bootstrap-4') }}
                     </div>
                 @endisset
+
             </div>
         </div>
     </div>

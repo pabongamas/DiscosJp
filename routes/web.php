@@ -26,6 +26,11 @@ Auth::routes(['register'=>false]);
 
 Route::get('/user',[UserController::class, 'index'])->name('user.index');
 Route::get('/user/crear',[UserController::class, 'create'])->name('user.create');
+Route::post('/user',[UserController::class, 'store'])->name('user.store');
+Route::get('/user/{user}',[UserController::class, 'show'])->name('user.show');
+Route::get('/user/{user}/edit',[UserController::class, 'edit'])->name('user.edit');
+Route::patch('/user/{user}',[UserController::class, 'update'])->name('user.update');
+Route::delete('/user/{user}',[UserController::class, 'destroy'])->name('user.destroy');
 
 Route::get('/General', [artistaController::class, 'index'])->name('general.index');
 Route::get('/General/indexMiColeccion', [albumController::class, 'indexMiColeccion'])->name('general.indexMiColeccion');

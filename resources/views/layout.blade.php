@@ -29,6 +29,7 @@
     <div id="app" class="d-flex flex-column h-screen justify-content-between">
         <div>
             @include('partials/nav')
+            @include('partials.session-status')
         </div>
         @guest
         @endguest
