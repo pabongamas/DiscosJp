@@ -12,6 +12,7 @@
     <!-- Scripts -->
    <!--  <script src="{{ asset('js/app.js') }}" defer></script> -->
    <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
+   <script src="{{ asset('funciones/frontEnds.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -28,9 +29,14 @@
     <div id="app">
         <nav class="navbar navbar-expand-md  bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
+                <div>
+                    <span style="font-size:30px;cursor:pointer;color: var(--blue);" onclick="openNav()">&#9776;
+                    </span>
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                      {{config('app.name')}}
+                      <i class="fas fa-record-vinyl"></i>
+                    </a>
+                  </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>

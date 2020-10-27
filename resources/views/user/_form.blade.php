@@ -46,7 +46,6 @@
 </div>
 
 <div class="form-row">
-    @dump($userRol)
     <div class="form-group col-md-6">
         <label for="birthdate">Fecha de nacimiento</label>
         <input type="text" name="birthdate" class="form-control  @error('birthdate') is-invalid @enderror"
@@ -79,7 +78,8 @@
             <option value="0"  @if (old('rol') == "0") {{ 'selected' }} @endif>Sin rol</option>
             @if (count($roles) > 0)
                 @foreach ($roles as $roles)
-                    <option value="{{ $roles->id }}" @if (old('rol') ==  $roles->id) {{ 'selected' }} @endif >{{ $roles->description }}</option>
+                    {{-- <option value="{{ $roles->id }}" @if (old('rol') ==  $roles->id) {{ 'selected' }} @endif >{{ $roles->description }}</option> --}}
+                    <option value="{{ $roles->id }}" @if(empty($userRol[0]))  @if (old('rol') ==  $roles->id) {{ 'selected' }} @endif @else @if($userRol[0]->role_id== $roles->id) {{'selected'}} @endif  @endif >{{ $roles->description }}</option>
                 @endforeach
             @else
             @endif

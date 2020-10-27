@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 }); */
 Route::view('/','index')->name('index');
-Auth::routes(['register'=>false]);
+Auth::routes(['register'=>true]);
 
 Route::get('/user',[UserController::class, 'index'])->name('user.index');
 Route::get('/user/crear',[UserController::class, 'create'])->name('user.create');

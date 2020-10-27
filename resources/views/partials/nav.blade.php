@@ -50,13 +50,14 @@
 </div>
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
   <div class="container">
-    <span style="font-size:30px;cursor:pointer;color: var(--blue);padding-right: 20px;" onclick="openNav()">&#9776;
-    </span>
-    <a class="navbar-brand" href="{{route('index')}}">
-      {{config('app.name')}}
-      <i class="fas fa-record-vinyl"></i>
-    </a>
-
+    <div>
+      <span style="font-size:30px;cursor:pointer;color: var(--blue);" onclick="openNav()">&#9776;
+      </span>
+      <a class="navbar-brand" href="{{route('index')}}">
+        {{config('app.name')}}
+        <i class="fas fa-record-vinyl"></i>
+      </a>
+    </div>
     <button class="navbar-toggler navbar-light oculto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
       <span class="navbar-toggler-icon"></span>
     </button>

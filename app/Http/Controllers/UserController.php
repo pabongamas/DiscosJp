@@ -95,12 +95,12 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $userRol = DB::table('role_user')
-        ->where('user_id', '=', $user->id)
-        ->get();
+            ->where('user_id', '=', $user->id)
+            ->get();
         return view('user.edit', [
             'user' => $user,
             'roles' => $roles,
-            'userRol'=>$userRol
+            'userRol' => $userRol
         ]);
     }
 
@@ -113,7 +113,17 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->update($request->validated());
+        /* var_dump($request->password);
+        exit;
+        $user->update($request->validated()); */
+        $user = User::find($user->id);
+        $user->name = $request->name;
+        $user->fullname = $request->fullname;
+        $user->email = $request->email;
+        $user->birthdate = $request->birthdate;
+        $user->gender = $request->gender;
+        $user->password =bcrypt($request->password);
+        $user->save();
         if ($request->rol == "0") {
             $userRol = DB::table('role_user')
                 ->where('user_id', '=', $user->id)
@@ -130,7 +140,7 @@ class UserController extends Controller
                 $Rol = DB::table('role_user')
                     ->where('user_id', $user->id)
                     ->update(['role_id' => $request->rol]);
-            }else{
+            } else {
                 DB::table('role_user')->insert([
                     ['user_id' => $user->id, 'role_id' => $request->rol]
                 ]);

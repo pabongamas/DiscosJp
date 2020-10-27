@@ -30,7 +30,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/';
+   /*  protected $redirectTo = RouteServiceProvider::HOME; */
 
     /**
      * Create a new controller instance.
@@ -67,7 +68,10 @@ class RegisterController extends Controller
     {
         $user = User::create([
             'name' => $data['name'],
+            'fullname' => $data['fullname'],
             'email' => $data['email'],
+            'birthdate' => $data['birthdate'],
+            'gender' => $data['gender'],
             'password' => bcrypt($data['password']),
         ]);
         $user
