@@ -26,5 +26,11 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+
+
+     /* esto lo hice para indicar una vez se haya hecho el reseteo de la nueva contraseña y la haya restablecido
+     el no vaya a la vista de login sino a la raiz , esto de protected se especifica porque en el archivo 
+     redirectusers el pregunta si existe redirecto  y si no va al home  */
+    protected $redirectTo = '/';
+  /*   protected $redirectTo = RouteServiceProvider::HOME; */
 }

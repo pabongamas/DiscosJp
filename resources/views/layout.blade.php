@@ -7,7 +7,7 @@
     <style>
 
     </style>
-    <link rel="icon" href="/img/ebook.png">
+    <link rel="icon" href="/img/favicon.ico">
     <!-- <link rel="stylesheet" type="text/css" href="/css/app.css">
     <script type="text/javascript" src="/js/app.js"></script> -->
     <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
