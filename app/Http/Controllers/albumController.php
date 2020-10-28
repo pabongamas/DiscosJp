@@ -28,7 +28,7 @@ class albumController extends Controller
   }
   public function indexMiColeccion(Request $request)
   {
-    $request->user()->authorizeRoles(['user']);
+    /* $request->user()->authorizeRoles(['user']); */
     $user= $request->user()->id;
     /* $albums=album::paginate(10); */
 
@@ -42,7 +42,7 @@ class albumController extends Controller
      ->where('users.id','=',$user)
      ->orderBy('artistas.name')
      ->orderBy('album.name')
-     ->paginate(10);
+     ->paginate(12);
     
     $arRegistros = array();
     foreach ($artistaTotal as $value) {
@@ -81,7 +81,8 @@ class albumController extends Controller
     }
     return view('general.indexMiColeccion',['albums' => $arRegistros,'pagination'=>$artistaTotal]);
   }
-  public function showAlbumColeccion(album $album ,artista $artista){
+  public function showAlbumColeccion(album $album ,artista $artista,Request $request){
+   /*  $request->user()->authorizeRoles(['user']); */
     $canciones = canciones::where('id_album', $album->id)
     ->select('id', 'id_album', 'minutos', 'name', 'numero_cancion', 'numero_cancion as DT_RowId')
     ->orderBy('numero_cancion')

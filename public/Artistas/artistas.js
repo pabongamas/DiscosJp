@@ -189,9 +189,9 @@ function listadoAlbums() {
         data: { _token: token },
         success: function(data) {
             $(data.data).each(function(i, o) {
-                var divCol = $("<div/>").addClass("col-6 col-lg-3 col-md-3");
+                var divCol = $("<div/>").addClass("col-6 col-lg-3 col-md-6");
                 var divCard = $("<div/>").addClass("card").attr({
-                    "style": "width: 18rem;margin-bottom: 15px;box-shadow:5px 5px 8px 0px " + o.color + ";border: 1px solid " + o.color
+                    "style": "margin-bottom: 15px;box-shadow:5px 5px 8px 0px " + o.color + ";border: 1px solid " + o.color
                 });
                 var imgCard = $("<img/>").addClass("card-img-top cursorPointer").attr({
                     "src": o.image,
@@ -203,7 +203,7 @@ function listadoAlbums() {
                 var nombreAlbum = $("<span/>").addClass("card-text").html(o.nombre);
                 var nombreArtista = $("<p/>").addClass("card-text").html(o.artista);
                 divCardBody.append(nombreAlbum, nombreArtista);
-                if (data.userNoAdmin && !o.enColeccion) {
+                if (!o.enColeccion) {
                     var CaretAñadir = $("<i/>").addClass("fas fa-plus cursorPointer").attr({
                         "style": "float:right;font-size:18px;color:" + o.color,
                         "data-toggle": "tooltip",
@@ -213,7 +213,7 @@ function listadoAlbums() {
                     })
                     nombreArtista.append(CaretAñadir);
                     /* divCardBody.append(CaretAñadir); */
-                } else if (data.userNoAdmin && o.enColeccion) {
+                } else if (o.enColeccion) {
                     /* <i class="fas fa-check"></i> */
                     var CaretAñadir = $("<i/>").addClass("fas fa-check cursorPointer").attr({
                         "style": "float:right;font-size:18px;color:" + o.color,

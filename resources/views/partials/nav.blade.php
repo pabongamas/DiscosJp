@@ -23,6 +23,7 @@
     </button>
     <div class="dropdown-container oculto nobrB">
       <a class="nav-link aInterno " href="{{route('user.index')}}" >Usuarios</a>
+      <a class="nav-link aInterno " href="{{route('rol.index')}}" >Roles</a>
       <a class="nav-link aInterno " href="{{route('artistas.index')}}" >Artistas</a>
       <a class="nav-link aInterno " href="{{route('albums.index')}}" >Albums</a>
       <a class="nav-link aInterno " href="{{route('generos.index')}}" >Generos</a>
@@ -32,6 +33,7 @@
     </button>
     <div class="dropdown-container oculto nobrB">
       <a class="nav-link aInterno " href="{{route('general.index')}}" >General</a>
+      <a class="nav-link aInterno " href="{{route('general.indexMiColeccion')}}" >Mi colección</a>
     </div>
     @endif
     @if(Auth::user()->hasRole('user'))

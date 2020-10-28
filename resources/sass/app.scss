@@ -627,3 +627,14 @@ table.dataTable tbody tr.selected {
         width: 30% !important;
     }
 }
+
+.formAuth {
+    border: none;
+    border-radius: 0;
+    box-shadow: 0px 0px 14px 0px;
+}
+
+.breadcrumb-item h4 {
+    padding-right: 10px;
+    padding-top: 4px;
+}

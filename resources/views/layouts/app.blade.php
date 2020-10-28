@@ -83,7 +83,10 @@
             </div>
         </nav>
 
-        <section class="py-4 sectionPrincipal">
+        <section class="py-4 sectionPrincipal" style="display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;">
             @yield('content')
         </section>
     </div>

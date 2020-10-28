@@ -4,6 +4,7 @@ use App\Http\Controllers\albumController;
 use App\Http\Controllers\artistaController;
 use App\Http\Controllers\cancionesController;
 use App\Http\Controllers\generoController;
+use App\Http\Controllers\rolController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,14 @@ Route::get('/user/{user}',[UserController::class, 'show'])->name('user.show');
 Route::get('/user/{user}/edit',[UserController::class, 'edit'])->name('user.edit');
 Route::patch('/user/{user}',[UserController::class, 'update'])->name('user.update');
 Route::delete('/user/{user}',[UserController::class, 'destroy'])->name('user.destroy');
+
+Route::get('/rol',[rolController::class, 'index'])->name('rol.index');
+Route::get('/rol/crear',[rolController::class, 'create'])->name('rol.create');
+Route::post('/rol',[rolController::class, 'store'])->name('rol.store');
+Route::get('/rol/{rol}',[rolController::class, 'show'])->name('rol.show');
+Route::get('/rol/{rol}/edit',[rolController::class, 'edit'])->name('rol.edit');
+Route::patch('/rol/{rol}',[rolController::class, 'update'])->name('rol.update');
+Route::delete('/rol/{rol}',[rolController::class, 'destroy'])->name('rol.destroy');
 
 Route::get('/General', [artistaController::class, 'index'])->name('general.index');
 Route::get('/General/indexMiColeccion', [albumController::class, 'indexMiColeccion'])->name('general.indexMiColeccion');

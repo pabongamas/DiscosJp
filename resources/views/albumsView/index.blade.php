@@ -3,7 +3,7 @@
 @section('content')
 @include('sweet::alert')
 <div class="container-fluid">
-    <div class="container div4" style="/*display: flex;align-items: center;*/">
+    <div class="container " style="/*display: flex;align-items: center;*/">
         <nav aria-label="breadcrumb " style="    padding-top: 20px;">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item " aria-current="page">
