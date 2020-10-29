@@ -9,6 +9,10 @@ class Role extends Model
 {
     protected $table='roles';
     protected $primaryKey ='id';
+    protected $fillable = [
+        'name',
+        'description',
+    ];
     public function users()
     {
         return $this

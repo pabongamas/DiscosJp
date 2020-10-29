@@ -146,7 +146,7 @@ class UserController extends Controller
                 ]);
             }
         }
-        return redirect()->route('user.index', $user)->with('status', 'El usuario ' . $user->name . ' se ha actualizado Correctamente');
+        return redirect()->route('user.index')->with('status', 'El usuario ' . $user->name . ' se ha actualizado Correctamente');
     }
 
     /**
@@ -166,9 +166,6 @@ class UserController extends Controller
             } else if ("album_user") {
                 $idCampo = 'user_id';
             }
-            /*   else if ($tabla == "usuario_rol") {
-            $idCampo = 'id_usuario';
-          } */
             $userUtilizado = DB::select('select * from ' . $tabla . ' where ' . $idCampo . '=' . $idUsuario . ' limit 1');
             if (count($userUtilizado) > 0) {
                 $cont++;

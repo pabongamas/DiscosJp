@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RolCreateRequest;
+use App\Http\Requests\UpdateRolRequest;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -29,7 +32,7 @@ class rolController extends Controller
      */
     public function create()
     {
-        //
+        return view('rol.create');
     }
 
     /**
@@ -38,9 +41,13 @@ class rolController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RolCreateRequest $request)
     {
-        //
+        $rol = Role::create([
+            'name' => request('name'),
+            'description' => request('description')
+        ]);
+        return redirect()->route('rol.index')->with('status-success', 'El rol ' . $rol->name . ' fue creado con exito');
     }
 
     /**
@@ -49,9 +56,11 @@ class rolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Role $rol)
     {
-        //
+        return view('rol.show', [
+            'rol' => $rol
+        ]);
     }
 
     /**
@@ -60,9 +69,11 @@ class rolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $rol)
     {
-        //
+        return view('rol.edit', [
+            'rol' => $rol
+        ]);
     }
 
     /**
@@ -72,9 +83,13 @@ class rolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRolRequest $request, Role $rol)
     {
-        //
+        $role = Role::find($rol->id);
+        $role->name = $request->name;
+        $role->description = $request->description;
+        $role->save();
+        return redirect()->route('rol.index')->with('status', 'El rol ' . $role->name . ' se ha actualizado Correctamente');
     }
 
     /**
@@ -83,8 +98,26 @@ class rolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $rol)
     {
-        //
+        $idRol = $rol->id;
+        $tablas = array('role_user');
+        $cont = 0;
+        foreach ($tablas as $tabla) {
+            if ($tabla == "role_user") {
+                $idCampo = 'role_id';
+            }
+            $rolUtilizado = DB::select('select * from ' . $tabla . ' where ' . $idCampo . '=' . $idRol . ' limit 1');
+            if (count($rolUtilizado) > 0) {
+                $cont++;
+            } else {
+            }
+        }
+        if ($cont == 0) {
+            $rol->delete();
+            return redirect()->route('rol.index')->with('status-success', 'El rol fue eliminado con exito');
+        } else {
+            return redirect()->route('rol.index')->with('status-error', 'El rol ' . $rol->name . ' esta siendo utilizado en otros modulos,no se puede eliminar');
+        }
     }
 }

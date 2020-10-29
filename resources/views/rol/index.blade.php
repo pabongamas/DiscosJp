@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb " style="    padding-top: 20px;">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item " aria-current="page">
-                        <h4 style="padding-right: 10px;padding-top: 4px;">Administración Usuarios</h4>
+                        <h4 style="padding-right: 10px;padding-top: 4px;">Administración Roles</h4>
                         <a class="btn btn-primary" href="{{ route('rol.create') }}">Nuevo Rol</a>
                     </li>
                 </ol>
