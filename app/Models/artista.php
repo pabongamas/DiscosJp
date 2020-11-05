@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class artista extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['name'];
+    protected $fillable = ['name','image','id_pais'];
     protected $table='artistas';
 }

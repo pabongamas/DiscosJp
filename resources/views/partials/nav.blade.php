@@ -35,6 +35,13 @@
       <a class="nav-link aInterno " href="{{route('general.index')}}" >General</a>
       <a class="nav-link aInterno " href="{{route('general.indexMiColeccion')}}" >Mi colección</a>
     </div>
+    <button class="dropdown-btn nobrB">contribuciones
+    </button>
+    <div class="dropdown-container oculto nobrB">
+      <a class="nav-link aInterno " href="{{route('artistas.showContribucion')}}">Artistas</a>
+     {{--  <a class="nav-link aInterno " href="{{route('albums.showContribucion')}}" >Albumes</a>
+      <a class="nav-link aInterno " href="{{route('generos.showContribucion')}}" >Generos</a> --}}
+    </div>
     @endif
     @if(Auth::user()->hasRole('user'))
     <button class="dropdown-btn nobrB">General
@@ -43,6 +50,13 @@
     <div class="dropdown-container oculto nobrB">
       <a class="nav-link aInterno " href="{{route('general.index')}}" >General</a>
       <a class="nav-link aInterno " href="{{route('general.indexMiColeccion')}}" >Mi colección</a>
+    </div>
+    <button class="dropdown-btn nobrB">Contribuir
+    </button>
+    <div class="dropdown-container oculto nobrB">
+      <a class="nav-link aInterno " href="{{route('artistas.indexContribuir')}}">Artistas</a>
+      <a class="nav-link aInterno " href="{{route('albums.indexContribuir')}}" >Albumes</a>
+      <a class="nav-link aInterno " href="{{route('generos.indexContribuir')}}" >Generos</a>
     </div>
     
       

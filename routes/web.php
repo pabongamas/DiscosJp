@@ -52,6 +52,12 @@ Route::post('/Artistas/AdminCrearArtista', [artistaController::class, 'crearArti
 Route::post('/Artistas/AdminEliminarArtista', [artistaController::class, 'eliminarArtista'])->name('artistas.eliminarArtista');
 Route::post('/Artistas/AdminEditarArtista', [artistaController::class, 'editarArtista'])->name('artistas.editarArtista');
 
+/* siguientes rutas para la contribucion de artista */
+Route::get('/ContribuirArtista',[artistaController::class, 'indexContribuirArtista'])->name('artistas.indexContribuir');
+Route::post('/ContribuirArtista',[artistaController::class, 'contribuirArtistaStore'])->name('artista.contribuirArtistaStore');
+Route::get('/ContribucionesArtista',[artistaController::class, 'showContribucion'])->name('artistas.showContribucion');
+Route::patch('/ContribucionesArtista/{contribucion}',[artistaController::class, 'añadirContribucion'])->name('artistas.añadirContribucion');
+
 Route::post('/Albums/listar', [albumController::class, 'listarAllAlbums'])->name('albums.showAlbums');
 Route::get('/Albums/Admin', [albumController::class, 'administrar'])->name('albums.index');
 Route::post('/Albums/showAdmin', [albumController::class, 'listarAdminAlbums'])->name('albums.showAdmin');
@@ -64,6 +70,8 @@ Route::post('/Albums/verInfoAlbum', [albumController::class, 'verInfoAlbum'])->n
 Route::post('/Albums/guardarCanciones', [albumController::class, 'guardarCanciones'])->name('albums.guardarCanciones');
 Route::post('/Albums/addAlbumColeccion', [albumController::class, 'addAlbumColeccion'])->name('albums.addAlbumColeccion');
 Route::post('/Albums/miColeccion', [albumController::class, 'miColeccion'])->name('albums.miColeccion');
+Route::get('/ContribuirAlbum',[albumController::class, 'indexContribuirAlbum'])->name('albums.indexContribuir');
+
 
 //aca en esta sigiuente ruta estoy trabajando los routes recibo un album con el id del album , se trabaja con
 //route de laravel
@@ -79,6 +87,8 @@ Route::post('/Generos/AdminCrearGenero', [generoController::class, 'crearGenero'
 Route::post('/Generos/AdminEliminarGenero', [generoController::class, 'eliminarGenero'])->name('generos.eliminarGenero');
 Route::post('/Generos/AdminEditarGenero', [generoController::class, 'editarGenero'])->name('generos.editarGenero');
 Route::post('/Generos/listarAlbumxGenero', [generoController::class, 'listarAlbumxGenero'])->name('generos.listarAlbumxGenero');
+Route::get('/ContribuirGenero',[generoController::class, 'indexContribuirGenero'])->name('generos.indexContribuir');
+
 
 Route::get('/home', [artistaController::class,'index'])->name('home');
 
