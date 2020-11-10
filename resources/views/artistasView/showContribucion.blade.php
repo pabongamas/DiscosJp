@@ -45,7 +45,7 @@
                                             <a class="btn btn-danger" href="#"
                                                 onclick="document.getElementById('deleteUser_{{ $contribucion->id }}').submit()">Eliminar</a>
                                             <form id="deleteUser_{{ $contribucion->id }}" class="d-none" method="POST"
-                                                action="{{ route('user.destroy', $contribucion->id) }}">
+                                                action="{{ route('artistas.eliminarContribucion', $contribucion->id) }}">
                                                 @csrf @method('DELETE')
 
                                             </form>
@@ -69,7 +69,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="5" class="text-center">
+                                    <td colspan="6" class="text-center">
                                         <span>No se encontraron contribuciones pendientes registradas</span>
                                     </td>
                                 </tr>

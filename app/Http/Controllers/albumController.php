@@ -26,6 +26,9 @@ class albumController extends Controller
     $request->user()->authorizeRoles(['admin']);
     return view('albumsView.index');
   }
+  public function indexContribuirAlbum(Request $request){
+    $request->user()->authorizeRoles(['user']);
+  }
   public function indexMiColeccion(Request $request)
   {
     /* $request->user()->authorizeRoles(['user']); */

@@ -6,8 +6,10 @@ use App\Http\Requests\contribuirArtistaCreateRequest;
 use App\Models\Paises;
 use App\Models\artista;
 use App\Models\contribucion_artista;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use LengthException;
 use UxWeb\SweetAlert\SweetAlert;
@@ -182,13 +184,13 @@ class artistaController extends Controller
     $f = finfo_open();
     $mime_type = finfo_buffer($f, $imgdata, FILEINFO_MIME_TYPE);
     $base64 = 'data:' . $mime_type . ';base64,' . $image;
-    $idUsuario=$request->user()->id;
+    $idUsuario = $request->user()->id;
 
     $contribucion = contribucion_artista::create([
       'name' => request('name'),
       'image' => $base64,
       'id_pais' => request('pais'),
-      'id_user'=>$idUsuario
+      'id_user' => $idUsuario
     ]);
     return redirect()->route('index')->with('status-success', 'Su contribucion ha sido creada correctamente,se le informara por correo electronico el estado de su contribución.');
   }
@@ -199,7 +201,23 @@ class artistaController extends Controller
       'image' => $contribucion->image,
       'id_pais' => $contribucion->id_pais
     ]);
+    $user =User::find($contribucion->id_user);
+    $subject = "Su contribucion del artista $contribucion->name fue añadida";
+    $for = $user->email;
+    $correoEmisor=env('MAIL_USERNAME');
+    $nombreEmisor=env('APP_NAME');
+
+    Mail::send('artistasView.emailArtistaContribucion', ['contribucion' => $contribucion], function($msj) use($subject,$for,$correoEmisor,$nombreEmisor){
+        $msj->from($correoEmisor,$nombreEmisor);
+        $msj->subject($subject);
+        $msj->to($for);
+    });
     $contribucion->delete();
-    return redirect()->route('artistas.showContribucion')->with('status-success', 'La contribucion del artista fue añadido con exito');
+    return redirect()->route('artistas.showContribucion')->with('status-success', 'La contribución del artista fue añadido con exito');
+  }
+  public function eliminarContribucion(contribucion_artista $contribucion)
+  {
+    $contribucion->delete();
+    return redirect()->route('artistas.showContribucion')->with('status-success', 'La contribución del artista fue eliminada correctamente.');
   }
 }

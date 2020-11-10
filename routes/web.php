@@ -57,6 +57,7 @@ Route::get('/ContribuirArtista',[artistaController::class, 'indexContribuirArtis
 Route::post('/ContribuirArtista',[artistaController::class, 'contribuirArtistaStore'])->name('artista.contribuirArtistaStore');
 Route::get('/ContribucionesArtista',[artistaController::class, 'showContribucion'])->name('artistas.showContribucion');
 Route::patch('/ContribucionesArtista/{contribucion}',[artistaController::class, 'añadirContribucion'])->name('artistas.añadirContribucion');
+Route::delete('/ContribucionesArtista/{contribucion}',[artistaController::class, 'eliminarContribucion'])->name('artistas.eliminarContribucion');
 
 Route::post('/Albums/listar', [albumController::class, 'listarAllAlbums'])->name('albums.showAlbums');
 Route::get('/Albums/Admin', [albumController::class, 'administrar'])->name('albums.index');
