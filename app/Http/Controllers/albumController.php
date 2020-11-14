@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\contribuirAlbumCreateRequest;
 use App\Models\album;
 use App\Models\album_artista;
 use App\Models\album_user;
 use App\Models\Paises;
 use App\Models\artista;
 use App\Models\canciones;
+use App\Models\contribucion_album;
 use App\Models\genero;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
-
+use Illuminate\Support\Facades\Mail;
 
 class albumController extends Controller
 {
@@ -26,27 +28,42 @@ class albumController extends Controller
     $request->user()->authorizeRoles(['admin']);
     return view('albumsView.index');
   }
-  public function indexContribuirAlbum(Request $request){
+  public function indexContribuirAlbum(Request $request)
+  {
     $request->user()->authorizeRoles(['user']);
+
+    $artista = artista::all()->sortBy("name");
+    $genero = genero::all()->sortBy("name");
+
+    return view('albumsView.indexContribuirAlbum', [
+      'contribucionAlbum' => new contribucion_album(),
+      'genero' => $genero,
+      'artista' => $artista,
+    ]);
   }
   public function indexMiColeccion(Request $request)
   {
     /* $request->user()->authorizeRoles(['user']); */
-    $user= $request->user()->id;
+    $user = $request->user()->id;
     /* $albums=album::paginate(10); */
 
-     $artistaTotal = DB::table('album')
-     ->join('album_artista', 'album_artista.album_id', '=', 'album.id')
-     ->join('artistas','artistas.id','=','album_artista.artista_id')
-     ->join('album_user','album_user.album_id','=','album.id')
-     ->join('users','album_user.user_id','=','users.id')
-     ->select('album.id as idAlbum','album.name as nameAlbum','album.image as imageAlbum'
-     ,'artistas.id as idArtista','artistas.name as nameArtista')
-     ->where('users.id','=',$user)
-     ->orderBy('artistas.name')
-     ->orderBy('album.name')
-     ->paginate(12);
-    
+    $artistaTotal = DB::table('album')
+      ->join('album_artista', 'album_artista.album_id', '=', 'album.id')
+      ->join('artistas', 'artistas.id', '=', 'album_artista.artista_id')
+      ->join('album_user', 'album_user.album_id', '=', 'album.id')
+      ->join('users', 'album_user.user_id', '=', 'users.id')
+      ->select(
+        'album.id as idAlbum',
+        'album.name as nameAlbum',
+        'album.image as imageAlbum',
+        'artistas.id as idArtista',
+        'artistas.name as nameArtista'
+      )
+      ->where('users.id', '=', $user)
+      ->orderBy('artistas.name')
+      ->orderBy('album.name')
+      ->paginate(12);
+
     $arRegistros = array();
     foreach ($artistaTotal as $value) {
       $obj = new \stdClass();
@@ -79,55 +96,56 @@ class albumController extends Controller
       $rPromedio = round($rTotal / $total);
       $vPromedio = round($vTotal / $total);
       $aPromedio = round($aTotal / $total);
-      $obj->color="rgb(".$rPromedio.",".$vPromedio.",".$aPromedio.")";
+      $obj->color = "rgb(" . $rPromedio . "," . $vPromedio . "," . $aPromedio . ")";
       $arRegistros[] = $obj;
     }
-    return view('general.indexMiColeccion',['albums' => $arRegistros,'pagination'=>$artistaTotal]);
+    return view('general.indexMiColeccion', ['albums' => $arRegistros, 'pagination' => $artistaTotal]);
   }
-  public function showAlbumColeccion(album $album ,artista $artista,Request $request){
-   /*  $request->user()->authorizeRoles(['user']); */
+  public function showAlbumColeccion(album $album, artista $artista, Request $request)
+  {
+    /*  $request->user()->authorizeRoles(['user']); */
     $canciones = canciones::where('id_album', $album->id)
-    ->select('id', 'id_album', 'minutos', 'name', 'numero_cancion', 'numero_cancion as DT_RowId')
-    ->orderBy('numero_cancion')
-    ->get();
+      ->select('id', 'id_album', 'minutos', 'name', 'numero_cancion', 'numero_cancion as DT_RowId')
+      ->orderBy('numero_cancion')
+      ->get();
     $genero = genero::find($album->id_genero);
     $album->genero = $genero->name;
     $album->anio = date('Y', strtotime(str_replace('-', '/', $album->anio)));
     $imageAlbum = explode(",", $album->image);
-      $dataImagen = base64_decode($imageAlbum[1]);
-      $image = imagecreatefromstring($dataImagen);
-      $rTotal = 0;
-      $vTotal = 0;
-      $aTotal = 0;
-      $total = 0;
-      for ($x = 0; $x < imagesx($image); $x++) {
-        for ($y = 0; $y < imagesy($image); $y++) {
-          $rgb = imagecolorat($image, $x, $y);
-          $r   = ($rgb >> 16) & 0xFF;
-          $v   = ($rgb >> 8) & 0xFF;
-          $a   = $rgb & 0xFF;
-          $rTotal += $r;
-          $vTotal += $v;
-          $aTotal += $a;
-          $total++;
-        }
+    $dataImagen = base64_decode($imageAlbum[1]);
+    $image = imagecreatefromstring($dataImagen);
+    $rTotal = 0;
+    $vTotal = 0;
+    $aTotal = 0;
+    $total = 0;
+    for ($x = 0; $x < imagesx($image); $x++) {
+      for ($y = 0; $y < imagesy($image); $y++) {
+        $rgb = imagecolorat($image, $x, $y);
+        $r   = ($rgb >> 16) & 0xFF;
+        $v   = ($rgb >> 8) & 0xFF;
+        $a   = $rgb & 0xFF;
+        $rTotal += $r;
+        $vTotal += $v;
+        $aTotal += $a;
+        $total++;
       }
-      $rPromedio = round($rTotal / $total);
-      $vPromedio = round($vTotal / $total);
-      $aPromedio = round($aTotal / $total);
-      $album->color="rgb(".$rPromedio.",".$vPromedio.",".$aPromedio.")";
-    
+    }
+    $rPromedio = round($rTotal / $total);
+    $vPromedio = round($vTotal / $total);
+    $aPromedio = round($aTotal / $total);
+    $album->color = "rgb(" . $rPromedio . "," . $vPromedio . "," . $aPromedio . ")";
 
-    return view('general.showAlbumColeccion',[
-         'album'=>$album,
-         'artista'=>$artista,
-         'canciones'=>$canciones
+
+    return view('general.showAlbumColeccion', [
+      'album' => $album,
+      'artista' => $artista,
+      'canciones' => $canciones
     ]);
- }
+  }
   public function listarAllAlbums(Request $request)
   {
-    $userRol=$request->user()->hasRole('user');
-    $userId= $request->user()->id;
+    $userRol = $request->user()->hasRole('user');
+    $userId = $request->user()->id;
     $artistaTotal = DB::select('select album.id as idAlbum,album.name as nameAlbum,album.image as imageAlbum
     ,artistas.id as idArtista, artistas.name as nameArtista from album 
     join album_artista on album_artista.album_id=album.id 
@@ -137,11 +155,11 @@ class albumController extends Controller
       $obj = new \stdClass();
       $obj->id_album = $value->idAlbum;
       $obj->DT_RowId = $value->idAlbum;
-      $enColeccion = DB::select('select * from album_user where user_id='.$userId.' and album_id='.$value->idAlbum.'');
-      if(count($enColeccion)>0){
-        $obj->enColeccion=true;
-      }else{
-        $obj->enColeccion=false;
+      $enColeccion = DB::select('select * from album_user where user_id=' . $userId . ' and album_id=' . $value->idAlbum . '');
+      if (count($enColeccion) > 0) {
+        $obj->enColeccion = true;
+      } else {
+        $obj->enColeccion = false;
       }
       $obj->nombre = $value->nameAlbum;
       $obj->artista = $value->nameArtista;
@@ -170,12 +188,12 @@ class albumController extends Controller
       $rPromedio = round($rTotal / $total);
       $vPromedio = round($vTotal / $total);
       $aPromedio = round($aTotal / $total);
-      $obj->color="rgb(".$rPromedio.",".$vPromedio.",".$aPromedio.")";
+      $obj->color = "rgb(" . $rPromedio . "," . $vPromedio . "," . $aPromedio . ")";
       $arRegistros[] = $obj;
     }
     return response()->json([
       'data' => $arRegistros,
-      'userNoAdmin'=>$userRol
+      'userNoAdmin' => $userRol
     ]);
   }
   /* Los siguientes metodos es para la administracion de albums */
@@ -202,30 +220,30 @@ class albumController extends Controller
       $obj->image = $value->image;
       $obj->id_artista = $value->artista_id;
 
-       /* siguiente es para obtener el color predominante la imagen  */
-       $imageAlbum = explode(",", $value->image);
-       $dataImagen = base64_decode($imageAlbum[1]);
-       $image = imagecreatefromstring($dataImagen);
-       $rTotal = 0;
-       $vTotal = 0;
-       $aTotal = 0;
-       $total = 0;
-       for ($x = 0; $x < imagesx($image); $x++) {
-         for ($y = 0; $y < imagesy($image); $y++) {
-           $rgb = imagecolorat($image, $x, $y);
-           $r   = ($rgb >> 16) & 0xFF;
-           $v   = ($rgb >> 8) & 0xFF;
-           $a   = $rgb & 0xFF;
-           $rTotal += $r;
-           $vTotal += $v;
-           $aTotal += $a;
-           $total++;
-         }
-       }
-       $rPromedio = round($rTotal / $total);
-       $vPromedio = round($vTotal / $total);
-       $aPromedio = round($aTotal / $total);
-       $obj->color="rgb(".$rPromedio.",".$vPromedio.",".$aPromedio.")";
+      /* siguiente es para obtener el color predominante la imagen  */
+      $imageAlbum = explode(",", $value->image);
+      $dataImagen = base64_decode($imageAlbum[1]);
+      $image = imagecreatefromstring($dataImagen);
+      $rTotal = 0;
+      $vTotal = 0;
+      $aTotal = 0;
+      $total = 0;
+      for ($x = 0; $x < imagesx($image); $x++) {
+        for ($y = 0; $y < imagesy($image); $y++) {
+          $rgb = imagecolorat($image, $x, $y);
+          $r   = ($rgb >> 16) & 0xFF;
+          $v   = ($rgb >> 8) & 0xFF;
+          $a   = $rgb & 0xFF;
+          $rTotal += $r;
+          $vTotal += $v;
+          $aTotal += $a;
+          $total++;
+        }
+      }
+      $rPromedio = round($rTotal / $total);
+      $vPromedio = round($vTotal / $total);
+      $aPromedio = round($aTotal / $total);
+      $obj->color = "rgb(" . $rPromedio . "," . $vPromedio . "," . $aPromedio . ")";
 
       $arRegistros[] = $obj;
     }
@@ -381,7 +399,7 @@ class albumController extends Controller
       $rPromedio = round($rTotal / $total);
       $vPromedio = round($vTotal / $total);
       $aPromedio = round($aTotal / $total);
-      $obj->color="rgb(".$rPromedio.",".$vPromedio.",".$aPromedio.")";
+      $obj->color = "rgb(" . $rPromedio . "," . $vPromedio . "," . $aPromedio . ")";
 
       $arRegistros[] = $obj;
     }
@@ -410,31 +428,31 @@ class albumController extends Controller
       ->orderBy('numero_cancion')
       ->get();
 
-      /* siguiente es para obtener el color predominante la imagen  */
-      $imageAlbum = explode(",", $album->image);
-      $dataImagen = base64_decode($imageAlbum[1]);
-      $image = imagecreatefromstring($dataImagen);
-      $rTotal = 0;
-      $vTotal = 0;
-      $aTotal = 0;
-      $total = 0;
-      for ($x = 0; $x < imagesx($image); $x++) {
-        for ($y = 0; $y < imagesy($image); $y++) {
-          $rgb = imagecolorat($image, $x, $y);
-          $r   = ($rgb >> 16) & 0xFF;
-          $v   = ($rgb >> 8) & 0xFF;
-          $a   = $rgb & 0xFF;
-          $rTotal += $r;
-          $vTotal += $v;
-          $aTotal += $a;
-          $total++;
-        }
+    /* siguiente es para obtener el color predominante la imagen  */
+    $imageAlbum = explode(",", $album->image);
+    $dataImagen = base64_decode($imageAlbum[1]);
+    $image = imagecreatefromstring($dataImagen);
+    $rTotal = 0;
+    $vTotal = 0;
+    $aTotal = 0;
+    $total = 0;
+    for ($x = 0; $x < imagesx($image); $x++) {
+      for ($y = 0; $y < imagesy($image); $y++) {
+        $rgb = imagecolorat($image, $x, $y);
+        $r   = ($rgb >> 16) & 0xFF;
+        $v   = ($rgb >> 8) & 0xFF;
+        $a   = $rgb & 0xFF;
+        $rTotal += $r;
+        $vTotal += $v;
+        $aTotal += $a;
+        $total++;
       }
-      $rPromedio = round($rTotal / $total);
-      $vPromedio = round($vTotal / $total);
-      $aPromedio = round($aTotal / $total);
-      $album->color="rgb(".$rPromedio.",".$vPromedio.",".$aPromedio.")";
-      /* $album->artista = $artista->name; */
+    }
+    $rPromedio = round($rTotal / $total);
+    $vPromedio = round($vTotal / $total);
+    $aPromedio = round($aTotal / $total);
+    $album->color = "rgb(" . $rPromedio . "," . $vPromedio . "," . $aPromedio . ")";
+    /* $album->artista = $artista->name; */
 
     return response()->json([
       'msg' => '',
@@ -468,12 +486,13 @@ class albumController extends Controller
       'successs' => true
     ]);
   }
-  public function addAlbumColeccion(Request $request){
-    $idAlbum=$request->idAlbum;
-    $user= $request->user()->id;
-    $albumUser=new album_user;
-    $albumUser->user_id=$user;
-    $albumUser->album_id=$idAlbum;
+  public function addAlbumColeccion(Request $request)
+  {
+    $idAlbum = $request->idAlbum;
+    $user = $request->user()->id;
+    $albumUser = new album_user;
+    $albumUser->user_id = $user;
+    $albumUser->album_id = $idAlbum;
     $albumUser->save();
     return response()->json([
       'msg' => '',
@@ -481,11 +500,76 @@ class albumController extends Controller
     ]);
   }
 
-  public function miColeccion(Request $request){
-    $user= $request->user()->id;
-    $albums=album::paginate(15);
+  public function miColeccion(Request $request)
+  {
+    $user = $request->user()->id;
+    $albums = album::paginate(15);
 
-    return view('general.indexMiColeccion',compact('albums'));
-   
+    return view('general.indexMiColeccion', compact('albums'));
+  }
+  /* siguiente metodo es para crear una contribucion de un usuario */
+  public function contribuirAlbumStore(contribuirAlbumCreateRequest $request)
+  {
+    /* dump($request->all()); */
+    $image = base64_encode(file_get_contents($request->file('single-image')));
+    $imgdata = base64_decode($image);
+    $f = finfo_open();
+    $mime_type = finfo_buffer($f, $imgdata, FILEINFO_MIME_TYPE);
+    $base64 = 'data:' . $mime_type . ';base64,' . $image;
+    $idUsuario = $request->user()->id;
+
+    $contribucion = contribucion_album::create([
+      'name' => request('name'),
+      'image' => $base64,
+      'anio' => request('anio'),
+      'id_genero' => request('genero'),
+      'id_artista' => request('artista'),
+      'id_user' => $idUsuario
+    ]);
+    return redirect()->route('index')->with('status-success', 'Su contribucion ha sido creada correctamente,se le informara por correo electronico el estado de su contribución.');
+  }
+  /* siguiente metodo es para mostrar las contribuciones disponibles que se han hecho */
+  public function showContribucion(Request $request)
+  {
+    $request->user()->authorizeRoles(['admin']);
+    $contribuciones = DB::table('contribucion_albums')
+      ->join('genero', 'contribucion_albums.id_genero', '=', 'genero.id')
+      ->join('artistas', 'contribucion_albums.id_artista', '=', 'artistas.id')
+      ->join('users', 'contribucion_albums.id_user', '=', 'users.id')
+      ->select('contribucion_albums.id','contribucion_albums.name as name',
+      'contribucion_albums.anio','contribucion_albums.image','users.fullname as usuario','genero.name as genero',
+      'artistas.name as artista')
+      ->orderBy('name')
+      ->paginate(1);
+    return view('albumsView.showContribucion', [
+      'contribuciones' => $contribuciones
+    ]);
+  }
+  /* siguiente metodo es para añadir una contribucion de un album  */
+  public function añadirContribucion(contribucion_album $contribucion)
+  {
+    $contribucionNueva = album::create([
+      'name' => $contribucion->name,
+      'image' => $contribucion->image,
+      'anio' => $contribucion->anio,
+      'id_genero'=>$contribucion->id_genero
+    ]);
+    $contribucionAlbumArtista = album_artista::create([
+      'artista_id' => $contribucion->id_artista,
+      'album_id' => $contribucionNueva->id
+    ]);
+    $user =User::find($contribucion->id_user);
+    $subject = "Su contribucion del album $contribucion->name fue añadida";
+    $for = $user->email;
+    $correoEmisor=env('MAIL_USERNAME');
+    $nombreEmisor=env('APP_NAME');
+
+    Mail::send('albumsView.emailAlbumContribucion', ['contribucion' => $contribucion], function($msj) use($subject,$for,$correoEmisor,$nombreEmisor){
+        $msj->from($correoEmisor,$nombreEmisor);
+        $msj->subject($subject);
+        $msj->to($for);
+    });
+    $contribucion->delete();
+    return redirect()->route('albums.showContribucion')->with('status-success', 'La contribución del album fue añadido con exito');
   }
 }

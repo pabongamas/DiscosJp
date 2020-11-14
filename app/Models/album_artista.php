@@ -9,5 +9,5 @@ class album_artista extends Model
 {
     protected $table='album_artista';
     public $timestamps = false;
-    protected $fillable = ['name', 'image'];
+    protected $fillable = ['artista_id', 'album_id'];
 }

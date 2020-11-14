@@ -35,12 +35,12 @@
       <a class="nav-link aInterno " href="{{route('general.index')}}" >General</a>
       <a class="nav-link aInterno " href="{{route('general.indexMiColeccion')}}" >Mi colección</a>
     </div>
-    <button class="dropdown-btn nobrB">contribuciones
+    <button class="dropdown-btn nobrB">Contribuciones
     </button>
     <div class="dropdown-container oculto nobrB">
       <a class="nav-link aInterno " href="{{route('artistas.showContribucion')}}">Artistas</a>
-     {{--  <a class="nav-link aInterno " href="{{route('albums.showContribucion')}}" >Albumes</a>
-      <a class="nav-link aInterno " href="{{route('generos.showContribucion')}}" >Generos</a> --}}
+       <a class="nav-link aInterno " href="{{route('albums.showContribucion')}}" >Albumes</a>
+     {{-- <a class="nav-link aInterno " href="{{route('generos.showContribucion')}}" >Generos</a> --}}
     </div>
     @endif
     @if(Auth::user()->hasRole('user'))

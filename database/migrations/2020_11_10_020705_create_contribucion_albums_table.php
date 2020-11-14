@@ -19,7 +19,10 @@ class CreateContribucionAlbumsTable extends Migration
             $table->longText('image');
             $table->date('anio');
             $table->unsignedBigInteger('id_genero');
+            $table->unsignedBigInteger('id_artista');
+            $table->unsignedBigInteger('id_user');
             $table->foreign('id_genero')->references('id')->on('genero');
+            $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();
         });
     }

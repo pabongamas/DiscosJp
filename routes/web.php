@@ -71,8 +71,13 @@ Route::post('/Albums/verInfoAlbum', [albumController::class, 'verInfoAlbum'])->n
 Route::post('/Albums/guardarCanciones', [albumController::class, 'guardarCanciones'])->name('albums.guardarCanciones');
 Route::post('/Albums/addAlbumColeccion', [albumController::class, 'addAlbumColeccion'])->name('albums.addAlbumColeccion');
 Route::post('/Albums/miColeccion', [albumController::class, 'miColeccion'])->name('albums.miColeccion');
-Route::get('/ContribuirAlbum',[albumController::class, 'indexContribuirAlbum'])->name('albums.indexContribuir');
 
+
+Route::get('/ContribuirAlbum',[albumController::class, 'indexContribuirAlbum'])->name('albums.indexContribuir');
+Route::post('/ContribuirAlbum',[albumController::class, 'contribuirAlbumStore'])->name('albums.contribuirAlbumStore');
+Route::get('/ContribucionesAlbum',[albumController::class, 'showContribucion'])->name('albums.showContribucion');
+Route::patch('/ContribucionesAlbum/{contribucion}',[albumController::class, 'añadirContribucion'])->name('albums.añadirContribucion');
+Route::delete('/ContribucionesAlbum/{contribucion}',[albumController::class, 'eliminarContribucion'])->name('albums.eliminarContribucion');
 
 //aca en esta sigiuente ruta estoy trabajando los routes recibo un album con el id del album , se trabaja con
 //route de laravel
