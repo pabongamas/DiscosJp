@@ -51,7 +51,7 @@ class artistaController extends Controller
       ->join('users', 'contribucion_artista.id_user', '=', 'users.id')
       ->select('contribucion_artista.id', 'contribucion_artista.name', 'contribucion_artista.image', 'paises.name as nombrePais', 'users.fullname as usuario')
       ->orderBy('name')
-      ->paginate(1);
+      ->paginate(10);
     return view('artistasView.showContribucion', [
       'contribuciones' => $contribuciones
     ]);

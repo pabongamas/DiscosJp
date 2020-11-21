@@ -93,8 +93,13 @@ Route::post('/Generos/AdminCrearGenero', [generoController::class, 'crearGenero'
 Route::post('/Generos/AdminEliminarGenero', [generoController::class, 'eliminarGenero'])->name('generos.eliminarGenero');
 Route::post('/Generos/AdminEditarGenero', [generoController::class, 'editarGenero'])->name('generos.editarGenero');
 Route::post('/Generos/listarAlbumxGenero', [generoController::class, 'listarAlbumxGenero'])->name('generos.listarAlbumxGenero');
-Route::get('/ContribuirGenero',[generoController::class, 'indexContribuirGenero'])->name('generos.indexContribuir');
 
+
+Route::get('/ContribuirGenero',[generoController::class, 'indexContribuirGenero'])->name('generos.indexContribuir');
+Route::post('/ContribuirGenero',[generoController::class, 'contribuirGeneroStore'])->name('generos.contribuirGeneroStore');
+Route::get('/ContribucionesGenero',[generoController::class, 'showContribucion'])->name('generos.showContribucion');
+Route::patch('/ContribucionesGenero/{contribucion}',[generoController::class, 'añadirContribucion'])->name('generos.añadirContribucion');
+Route::delete('/ContribucionesGenero/{contribucion}',[generoController::class, 'eliminarContribucion'])->name('generos.eliminarContribucion');
 
 Route::get('/home', [artistaController::class,'index'])->name('home');
 

@@ -40,7 +40,7 @@
     <div class="dropdown-container oculto nobrB">
       <a class="nav-link aInterno " href="{{route('artistas.showContribucion')}}">Artistas</a>
        <a class="nav-link aInterno " href="{{route('albums.showContribucion')}}" >Albumes</a>
-     {{-- <a class="nav-link aInterno " href="{{route('generos.showContribucion')}}" >Generos</a> --}}
+     <a class="nav-link aInterno " href="{{route('generos.showContribucion')}}" >Generos</a>
     </div>
     @endif
     @if(Auth::user()->hasRole('user'))

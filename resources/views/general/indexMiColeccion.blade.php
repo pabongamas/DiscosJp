@@ -13,7 +13,7 @@
                         @foreach ($albums as $album)
                             <div class="col-12 col-lg-4 col-md-4">
                                 <div class="card"
-                                    style="width: 22rem;margin-bottom: 15px;box-shadow:5px 5px 8px 0px {{ $album->color }};border: 1px solid {{ $album->color }}">
+                                    style="margin-bottom: 15px;box-shadow:5px 5px 8px 0px {{ $album->color }};border: 1px solid {{ $album->color }}">
                                     <!-- este es para visualizar la info por medio de js y ajax -->
                                     {{-- <img
                                         onclick="verInfoAlbum({{ $album->id_album }},{{ $album->id_artista }})"

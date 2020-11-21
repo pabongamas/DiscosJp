@@ -216,7 +216,7 @@ class albumController extends Controller
       $artista = artista::where('id', $value->artista_id)->value('name');
       $genero = genero::where('id', $value->id_genero)->value('name');
       $obj->artista = $artista;
-      $obj->artista = $genero;
+      $obj->genero = $genero;
       $obj->image = $value->image;
       $obj->id_artista = $value->artista_id;
 
@@ -540,7 +540,7 @@ class albumController extends Controller
       'contribucion_albums.anio','contribucion_albums.image','users.fullname as usuario','genero.name as genero',
       'artistas.name as artista')
       ->orderBy('name')
-      ->paginate(1);
+      ->paginate(10);
     return view('albumsView.showContribucion', [
       'contribuciones' => $contribuciones
     ]);
@@ -571,5 +571,10 @@ class albumController extends Controller
     });
     $contribucion->delete();
     return redirect()->route('albums.showContribucion')->with('status-success', 'La contribución del album fue añadido con exito');
+  }
+  public function eliminarContribucion(contribucion_album $contribucion)
+  {
+    $contribucion->delete();
+    return redirect()->route('albums.showContribucion')->with('status-success', 'La contribución del album fue eliminada correctamente.');
   }
 }

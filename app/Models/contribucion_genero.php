@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class contribucion_genero extends Model
 {
     use HasFactory;
-    protected $table='contribucion_genero';
+    protected $table='contribucion_generos';
     public $timestamps = true;
-    protected $fillable = ['name'];
+    protected $fillable = ['name','id_user'];
 }

@@ -16,6 +16,8 @@ class CreateContribucionGenerosTable extends Migration
         Schema::create('contribucion_generos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();
         });
     }
