@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb " style="    padding-top: 20px;">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item " aria-current="page">
-                        <h4 style="padding-right: 10px">Seleccione las contribuciones de artistas que desee vincular. </h4>
+                        <h4 style="padding-right: 10px">Seleccione las contribuciones de artistas que desee vincular. xd </h4>
                     </li>
 
                 </ol>

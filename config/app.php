@@ -169,7 +169,7 @@ return [
         /*
          * Package Service Providers...
          */
-        UxWeb\SweetAlert\SweetAlertServiceProvider::class,
+       /*  UxWeb\SweetAlert\SweetAlertServiceProvider::class, */
 
         /*
          * Application Service Providers...
@@ -179,8 +179,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\TelescopeServiceProvider::class,
-        Laraveles\Spanish\SpanishServiceProvider::class,
+        /* App\Providers\TelescopeServiceProvider::class, */
+        /* Laraveles\Spanish\SpanishServiceProvider::class, */
 
     ],
 
@@ -233,7 +233,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Alert' => UxWeb\SweetAlert\SweetAlert::class,
+        /* 'Alert' => UxWeb\SweetAlert\SweetAlert::class, */
 
     ],
 
