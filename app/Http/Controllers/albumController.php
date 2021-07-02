@@ -147,8 +147,8 @@ class albumController extends Controller
     $userRol = $request->user()->hasRole('user');
     $userId = $request->user()->id;
     $artistaTotal = DB::select('select album.id as idAlbum,album.name as nameAlbum,album.image as imageAlbum
-    ,artistas.id as idArtista, artistas.name as nameArtista from album 
-    join album_artista on album_artista.album_id=album.id 
+    ,artistas.id as idArtista, artistas.name as nameArtista from album
+    join album_artista on album_artista.album_id=album.id
     join artistas on artistas.id=album_artista.artista_id order by artistas.name,album.name');
     $arRegistros = array();
     foreach ($artistaTotal as $value) {
