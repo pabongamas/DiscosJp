@@ -19,3 +19,8 @@ for (i = 0; i < dropdown.length; i++) {
         }
     });
 }
+$('.datepicker').datepicker({
+    format: "yyyy-mm-dd",
+    language: "es",
+    autoclose: true
+});

@@ -48,7 +48,7 @@
 <div class="form-row">
     <div class="form-group col-md-6">
         <label for="birthdate">Fecha de nacimiento</label>
-        <input type="text" name="birthdate" class="form-control  @error('birthdate') is-invalid @enderror"
+        <input type="text" name="birthdate" class="form-control datepicker  @error('birthdate') is-invalid @enderror"
             id="birthdate" placeholder="-- Fecha nacimiento --" value="{{old('birthdate',$user->birthdate)}}">
         @error('birthdate')
         <span class="invalid-feedback" role="alert">

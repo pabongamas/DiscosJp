@@ -20,6 +20,11 @@
     <!-- <link href="{{ asset('librerias/DataTables/datatables.min.css')}}" defer rel="stylesheet"> -->
     <script src="{{ asset('librerias/sweetalert2/dist/sweetalert2.all.min.js')}}" defer></script>
   <!--   <script src="{{ asset('librerias/DataTables/datatables.min.js')}}" defer></script>  -->
+    <link rel="stylesheet" href="{{asset('datePicker/css/bootstrap-datepicker3.css')}}">
+    <link rel="stylesheet" href="{{asset('datePicker/css/bootstrap-datepicker.standalone.css')}}">
+    <script src="{{asset('datePicker/js/bootstrap-datepicker.js')}}"></script>
+    <!-- Languaje -->
+    <script src="{{asset('datePicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
     @yield('script')
 </head>
 

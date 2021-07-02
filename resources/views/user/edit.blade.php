@@ -10,7 +10,7 @@
                     <li class="breadcrumb-item " aria-current="page">
                         <h4 style="padding-right: 10px">Edición usuario</h4>
                     </li>
-                   
+
                 </ol>
             </nav>
             <div class="row">
